@@ -1,3 +1,4 @@
-.profilePicture {
-	transform: scale (0.5);
+.picture {
+	height: auto;
+	width: 20vh;
 }

@@ -7,9 +7,10 @@ export default function UserComponent(props) {
 		if (user !== undefined) {
 			return (
 				<>
-					<h2 className='user'>{user.Username}</h2>
-					<h3 className='name'>Name: {user.Name}</h3>
-					<h3 className='email'>Email: {user.Email}</h3>
+					<div>
+						<h3 className='name'>Name: {user.Name}</h3>
+						<h3 className='email'>Email: {user.Email}</h3>
+					</div>
 					<img className='picture' alt='profilePicture' src={user.Picture} />
 				</>
 			);
