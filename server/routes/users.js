@@ -1,8 +1,7 @@
 var router = require('express').Router();
-const { requiresAuth } = require('express-openid-connect');
 
-router.get('/profile', requiresAuth(), (req, res, next) => {
-	let user = req.oidc.user;
+router.get('/profile', (req, res, next) => {
+	/* let user = req.oidc.user;
 	res.json({
 		userProfile: {
 			Username: user.nickname,
@@ -11,7 +10,8 @@ router.get('/profile', requiresAuth(), (req, res, next) => {
 			Verified: user.email_verified,
 			Picture: user.picture,
 		},
-	});
+	}); */
+	res.end();
 });
 
 module.exports = router;

@@ -1,5 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const multer = require('multer');
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
 const {
 	S3Client,
 	GetObjectCommand,
@@ -14,10 +19,9 @@ const s3 = new S3Client({
 		secretAccessKey: process.env.S3_SECRET,
 	},
 });
-const { requiresAuth } = require('express-openid-connect');
 
-/* GET all stored images */
-router.get('/', requiresAuth(), async (req, res, next) => {
+/* GET all users stored images */
+router.get('/', async (req, res, next) => {
 	let user = req.oidc.user;
 	var params = {
 		Bucket: process.env.S3_BUCKET,
@@ -26,8 +30,6 @@ router.get('/', requiresAuth(), async (req, res, next) => {
 		Delimiter: '/',
 		Prefix: user.email + '/',
 	};
-
-	console.log(params);
 
 	try {
 		const results = await s3.send(
@@ -64,20 +66,42 @@ router.get('/', requiresAuth(), async (req, res, next) => {
 
 /* GET a specific stored image */
 
-/* POST a new image */
-router.post('/', requiresAuth(), async (req, res, next) => {
-	let user = req.oidc.user;
-	var params = {
+/* function to upload file and returng a promise */
+/* const uploadFile = async (buffer, name, type) => {
+	const params = {
 		Bucket: process.env.S3_BUCKET,
-		Key: 'test2',
-		Body: 'Hello test mothafucka',
+		Key: req.oidc.user.email + '/' + name + type.ext,
+		Body: buffer,
+		ContentType: type.mime,
 		Delimiter: '/',
-		Prefix: user.email + '/',
+		Prefix: req.oidc.user.email + '/',
 	};
+	return s3.send(new PutObjectCommand(params).promise());
+}; */
+/* POST a new image */
+router.post('/', upload.single('file'), async (req, res, next) => {
+	const { file } = req;
+	let user = req.oidc.user;
+	console.log(file);
 
-	console.log(params);
+	if (!file || !user) return res.status(400).json({ message: 'Bad Request' });
+	/* form.parse(req, async (err, fields, files) => {
+		if (err) {
+			return res.status(500).send(err);
+		}
+		try {
+			const path = files.file[0].path;
+			const buffer = fs.readFileSync(path);
+			const type = await FileType.fileTypeFromBuffer(buffer);
+			const name = `bucketFolder/${(Date, now().toString())}`;
+			const data = await uploadFile(buffer, name, type);
+			return res.status(200).send(data);
+		} catch (err) {
+			return res.status(500).send(err);
+		}
+	}); */
 
-	try {
+	/* 	try {
 		const results = await s3.send(
 			new PutObjectCommand({
 				Body: params.Body,
@@ -88,8 +112,7 @@ router.post('/', requiresAuth(), async (req, res, next) => {
 		console.log(results);
 	} catch (error) {
 		console.log(error);
-	}
-
+	} */
 	res.end();
 });
 

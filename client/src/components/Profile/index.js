@@ -2,6 +2,7 @@ import './index.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import UserComponent from './User/index';
+import FileUpload from '../File';
 
 const Profile = () => {
 	const [user, getUser] = useState('');
@@ -19,7 +20,12 @@ const Profile = () => {
 			.catch((err) => console.log(err));
 	};
 
-	return <UserComponent user={user} />;
+	return (
+		<>
+			<UserComponent user={user} />
+			<FileUpload />
+		</>
+	);
 };
 
 export default Profile;

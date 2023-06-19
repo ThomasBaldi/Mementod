@@ -3,8 +3,6 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var { auth } = require('express-openid-connect');
-var fileUpload = require('express-fileupload');
 var cors = require('cors');
 require('dotenv').config();
 
@@ -14,25 +12,18 @@ var picturesRouter = require('./routes/pictures');
 
 var app = express();
 
-app.use(cors());
+app.use(
+	cors({
+		origin: '*',
+	})
+);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(fileUpload());
 
-app.use(
-	auth({
-		issuerBaseURL: process.env.ISSUER_BASE_URL,
-		baseURL: process.env.BASE_URL,
-		clientID: process.env.CLIENT_ID,
-		secret: process.env.SECRET,
-		idpLogout: true,
-	})
-);
-
-// Middleware to make the `user` object available for all views
+/* // Middleware to make the `user` object available for all views
 app.use(function (req, res, next) {
 	if (!req.oidc.user) {
 		res.locals.user == 'Guest';
@@ -40,7 +31,7 @@ app.use(function (req, res, next) {
 		res.locals.user = req.oidc.user;
 	}
 	next();
-});
+}); */
 
 app.use('/', indexRouter);
 app.use('/', usersRouter);
