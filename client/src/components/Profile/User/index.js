@@ -1,22 +1,25 @@
 import './index.css';
+/* import React, { useEffect, useState } from 'react'; */
+import { useAuth0 } from '@auth0/auth0-react';
 
-export default function UserComponent(props) {
-	const displayUser = (props) => {
-		const { user } = props;
+export default function UserComponent() {
+	const { user, isAuthenticated, isLoading } = useAuth0();
 
-		if (user !== undefined) {
-			return (
-				<>
-					<div>
-						<h3 className='name'>Name: {user.Name}</h3>
-						<h3 className='email'>Email: {user.Email}</h3>
-					</div>
-					<img className='picture' alt='profilePicture' src={user.Picture} />
-				</>
-			);
-		} else {
-			return <h3>Guest user. Login to see your user profile.</h3>;
-		}
-	};
-	return <>{displayUser(props)}</>;
+	if (isLoading) {
+		return <p>Loading...</p>;
+	}
+
+	if (isAuthenticated) {
+		return (
+			<>
+				<div>
+					<h3 className='name'>Name: {user.name}</h3>
+					<h3 className='email'>Email: {user.email}</h3>
+				</div>
+				<img className='picture' alt='profilePicture' src={user.picture} />
+			</>
+		);
+	} else {
+		return <h3>Guest user. Please log in to view your profile.</h3>;
+	}
 }

@@ -12,26 +12,13 @@ var picturesRouter = require('./routes/pictures');
 
 var app = express();
 
-app.use(
-	cors({
-		origin: '*',
-	})
-);
+app.use(cors());
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-/* // Middleware to make the `user` object available for all views
-app.use(function (req, res, next) {
-	if (!req.oidc.user) {
-		res.locals.user == 'Guest';
-	} else {
-		res.locals.user = req.oidc.user;
-	}
-	next();
-}); */
 
 app.use('/', indexRouter);
 app.use('/', usersRouter);
@@ -50,7 +37,7 @@ app.use(function (err, req, res, next) {
 
 	// render the error page
 	res.status(err.status || 500);
-	res.render('error');
+	res.json({ Error: 'error' });
 });
 
 const PORT = process.env.PORT || 9000;

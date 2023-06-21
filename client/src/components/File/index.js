@@ -1,13 +1,17 @@
 import './index.css';
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const validFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
 export default function FileUpload() {
 	const [error, setError] = useState('');
-	const [message, setMNessage] = useState('');
+	const [message, setMessage] = useState('');
+	const { getAccessTokenSilently } = useAuth0();
+
 	const handleUpload = async (e) => {
+		e.preventDefault();
 		const file = e.target.files[0];
 		if (!file) {
 			return;
@@ -19,14 +23,24 @@ export default function FileUpload() {
 		} else {
 			setError('');
 		}
-		//make API call to load the image through form
+		//make API call to server to load the image through form
 		try {
+			const accessToken = await getAccessTokenSilently({
+				authorizationParams: {
+					audience: `${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/`,
+				},
+			});
 			const formData = new FormData();
 			formData.append('file', file);
 			await axios
-				.post('/pictures', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+				.post(`${process.env.REACT_APP_SERVER_URL}/pictures`, formData, {
+					headers: {
+						'Content-Type': 'multipart/form-data',
+						Authorization: `Bearer ${accessToken}`,
+					},
+				})
 				.then((res) => {
-					if (res.status === 200) setMNessage(`${file.name} uploaded`);
+					if (res.status === 200) setMessage(`${file.name} uploaded`);
 				});
 		} catch (err) {
 			setError(err.message);
