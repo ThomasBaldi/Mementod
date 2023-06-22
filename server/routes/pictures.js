@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const { authMiddleware, verifyToken } = require('./authentication/routesMiddleware');
+const { isAuthorized, getTokenData } = require('./authentication/routesMiddleware');
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -22,7 +22,7 @@ const s3 = new S3Client({
 });
 
 /* GET all users stored images */
-router.get('/', verifyToken, authMiddleware, async (req, res, next) => {
+router.get('/', async (req, res, next) => {
 	const user = req.user;
 	console.log(user);
 	res.json({ user: user });
@@ -31,13 +31,15 @@ router.get('/', verifyToken, authMiddleware, async (req, res, next) => {
 /* GET a specific stored image */
 
 /* POST a new image */
-router.post('/', authMiddleware, verifyToken, upload.single('file'), async (req, res, next) => {
+router.post('/', isAuthorized, upload.single('file'), async (req, res, next) => {
 	const { file } = req;
-	console.log(file);
-	return console.log(req.user);
-
-	/* const user = req.user;
-	console.log(user); */
+	const userId = getTokenData(req);
+	console.log({ user: userId, file: file });
+	if (userId) {
+		res.status(200);
+	} else {
+		res.end();
+	}
 
 	/* if (!file || !user) return res.status(400).json({ message: 'Bad Request' }); */
 	/* form.parse(req, async (err, fields, files) => {
@@ -68,7 +70,6 @@ router.post('/', authMiddleware, verifyToken, upload.single('file'), async (req,
 	} catch (error) {
 		console.log(error);
 	} */
-	next();
 });
 
 /* DELETE a specific image */

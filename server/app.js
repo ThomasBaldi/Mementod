@@ -6,11 +6,11 @@ var logger = require('morgan');
 var cors = require('cors');
 require('dotenv').config();
 
+var app = express();
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var picturesRouter = require('./routes/pictures');
-
-var app = express();
 
 app.use(cors());
 

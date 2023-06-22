@@ -39,9 +39,7 @@ export default function FileUpload() {
 						Authorization: `Bearer ${accessToken}`,
 					},
 				})
-				.then((res) => {
-					if (res.status === 200) setMessage(`${file.name} uploaded`);
-				});
+				.then(setMessage(`${file.name} uploaded`));
 		} catch (err) {
 			setError(err.message);
 			console.log(err);
