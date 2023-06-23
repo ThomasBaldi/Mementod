@@ -2,24 +2,9 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const { isAuthorized, getTokenData } = require('./authentication/routesMiddleware');
-
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
-
-const {
-	S3Client,
-	GetObjectCommand,
-	ListObjectsCommand,
-	PutObjectCommand,
-	DeleteObjectCommand,
-} = require('@aws-sdk/client-s3');
-const s3 = new S3Client({
-	region: process.env.S3_REGION,
-	credentials: {
-		accessKeyId: process.env.S3_ACCESS_KEY,
-		secretAccessKey: process.env.S3_SECRET,
-	},
-});
+const { uploadToS3 } = require('./s3Storage/s3');
 
 /* GET all users stored images */
 router.get('/', async (req, res, next) => {
@@ -41,7 +26,14 @@ router.post('/', isAuthorized, upload.single('file'), async (req, res, next) => 
 		res.end();
 	}
 
-	/* if (!file || !user) return res.status(400).json({ message: 'Bad Request' }); */
+	if (!file || !userId) {
+		return res.status(400).json({ message: 'Bad Request' });
+	} else {
+		const { err, key } = uploadToS3({ file, userId });
+		if (err) return res.status(500).json({ message: err.message });
+
+		return res.status(201).json({ key });
+	}
 	/* form.parse(req, async (err, fields, files) => {
 		if (err) {
 			return res.status(500).send(err);

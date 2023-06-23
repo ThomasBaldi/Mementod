@@ -1,0 +1,10 @@
+.container {
+	display: flex;
+	justify-content: center;
+	margin-top: 1vh;
+}
+
+.Login,
+.Logout {
+	margin-left: 10px;
+}

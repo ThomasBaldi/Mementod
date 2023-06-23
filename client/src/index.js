@@ -2,8 +2,9 @@ import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import Auth0ProviderWithHistory from './components/auth/auth0-provider';
+import Auth0ProviderWithHistory from './components/Auth/auth0-provider';
 import App from './App';
+import '@fontsource/roboto/300.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

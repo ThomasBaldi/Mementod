@@ -9,6 +9,7 @@ export default function FileUpload() {
 	const [error, setError] = useState('');
 	const [message, setMessage] = useState('');
 	const { getAccessTokenSilently } = useAuth0();
+	/* const toast = useToast(); */
 
 	const handleUpload = async (e) => {
 		e.preventDefault();
@@ -39,7 +40,15 @@ export default function FileUpload() {
 						Authorization: `Bearer ${accessToken}`,
 					},
 				})
-				.then(setMessage(`${file.name} uploaded`));
+				.then(() => {
+					setMessage(`${file.name} uploaded`);
+					/* toast({
+				title: 'Picture Successfully Uploaded';
+				status: 'success'
+				duration: 2000,
+				postion: 'top
+				}) */
+				});
 		} catch (err) {
 			setError(err.message);
 			console.log(err);
