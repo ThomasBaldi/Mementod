@@ -1,6 +1,6 @@
 import './index.css';
-/* import React, { useEffect, useState } from 'react'; */
 import { useAuth0 } from '@auth0/auth0-react';
+import { Container } from '@mui/material';
 
 export default function UserComponent() {
 	const { user, isAuthenticated, isLoading } = useAuth0();
@@ -12,11 +12,13 @@ export default function UserComponent() {
 	if (isAuthenticated) {
 		return (
 			<>
-				<div>
-					<h3 className='name'>Name: {user.name}</h3>
-					<h3 className='email'>Email: {user.email}</h3>
-				</div>
-				<img className='picture' alt='profilePicture' src={user.picture} />
+				<Container maxWidth='lg' id='userContainer'>
+					<div className='details'>
+						<h3 className='name'>{user.name}</h3>
+						<h3 className='email'>{user.email}</h3>
+					</div>
+					<img className='picture' alt='profilePicture' src={user.picture} />
+				</Container>
 			</>
 		);
 	} else {
