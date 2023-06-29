@@ -82,6 +82,7 @@ export default function ShowUserImages() {
 						{picturesArr.map((item) => (
 							<div key={item.name}>
 								<img
+									className='image'
 									src={item.src}
 									alt={item.name}
 									onClick={() => handleImageClick(item.src)}

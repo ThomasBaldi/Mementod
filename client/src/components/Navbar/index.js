@@ -1,4 +1,3 @@
-import './index.css';
 import LoginButton from './LoginButton';
 import LogoutButton from './LogoutButton';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -25,38 +24,40 @@ const Navbar = () => {
 
 	if (isAuthenticated) {
 		return (
-			<div className='container' id='navbarContainer'>
+			<div className='navbarContainer'>
 				<ButtonGroup
 					className='btnGroup'
 					size={size}
 					color='secondary'
 					aria-label='large button group'
+					orientation='vertical'
 				>
 					<Button href='/'>Home</Button>
 					<Button href='/profile'>Profile</Button>
 					<Button href='/builder'>Builder</Button>
 					<Button href='/contact'>Contact</Button>
+					<br />
+					<LogoutButton />
 				</ButtonGroup>
-				<Button variant='text' disabled></Button>
-				<LogoutButton />
 			</div>
 		);
 	} else {
 		return (
-			<div className='container'>
+			<div className='navbarContainer'>
 				<ButtonGroup
 					className='btnGroup'
 					size={size}
 					color='secondary'
 					aria-label='large button group'
+					orientation='vertical'
 				>
 					<Button href='/'>Home</Button>
 					<Button href='/profile'>Profile</Button>
 					<Button href='/builder'>Builder</Button>
 					<Button href='/contact'>Contact</Button>
+					<br />
+					<LoginButton />
 				</ButtonGroup>
-				<Button variant='text' disabled></Button>
-				<LoginButton />
 			</div>
 		);
 	}
