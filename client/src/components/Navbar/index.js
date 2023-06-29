@@ -3,6 +3,7 @@ import LogoutButton from './LogoutButton';
 import { useAuth0 } from '@auth0/auth0-react';
 import { ButtonGroup, Button, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import logo from '../../assets/images/mementod.jpg';
 
 const Navbar = () => {
 	const { isAuthenticated } = useAuth0();
@@ -25,6 +26,7 @@ const Navbar = () => {
 	if (isAuthenticated) {
 		return (
 			<div className='navbarContainer'>
+				<img className='logo' src={logo} alt='Mementod Logo' />
 				<ButtonGroup
 					className='btnGroup'
 					size={size}
@@ -44,6 +46,7 @@ const Navbar = () => {
 	} else {
 		return (
 			<div className='navbarContainer'>
+				<img className='logo' src={logo} alt='Mementod Logo' />
 				<ButtonGroup
 					className='btnGroup'
 					size={size}

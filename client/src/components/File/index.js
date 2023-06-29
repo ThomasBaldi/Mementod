@@ -8,7 +8,7 @@ const validFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 export default function FileUpload() {
 	const [error, setError] = useState('');
 	const [message, setMessage] = useState('');
-	const { getAccessTokenSilently } = useAuth0();
+	const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 	/* const toast = useToast(); */
 
 	const handleUpload = async (e) => {
@@ -55,21 +55,38 @@ export default function FileUpload() {
 		}
 	};
 
-	return (
-		<>
-			<input
-				id='imageInput'
-				type='file'
-				onChange={handleUpload}
-				style={{ display: 'none' }}
-			></input>
-			<Button color='secondary' variant='contained' style={{ marginBottom: '3vh' }}>
-				<label as='label' htmlFor='imageInput'>
+	const styling = {
+		marginBottom: '3vh',
+		width: '100%',
+		transition: '0s 0.1s',
+		'&:active': {
+			backgroundColor: '#121212',
+			transition: '0s',
+			border: '1px solid #834bff',
+		},
+	};
+
+	if (isAuthenticated)
+		return (
+			<>
+				<input
+					id='imageInput'
+					type='file'
+					onChange={handleUpload}
+					style={{ display: 'none' }}
+				></input>
+				<Button
+					className='button'
+					color='secondary'
+					variant='contained'
+					as='label'
+					htmlFor='imageInput'
+					sx={styling}
+				>
 					Upload Picture
-				</label>
-			</Button>
-			{error && <p style={{ color: '#FF0000' }}>{error}</p>}
-			{message && <p style={{ color: '##00FF00' }}>{message}</p>}
-		</>
-	);
+				</Button>
+				{error && <p style={{ color: '#FF0000' }}>{error}</p>}
+				{message && <p style={{ color: '##00FF00' }}>{message}</p>}
+			</>
+		);
 }

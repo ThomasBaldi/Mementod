@@ -31,7 +31,7 @@ export default function UserComponent() {
 				<Box size={width} id='userBox'>
 					<img className='picture' alt='profilePicture' src={user.picture} />
 					<div className='details'>
-						<h3 className='name'>{user.name}</h3>
+						<h3 className='name'>{user.nickname}</h3>
 						<h3 className='email'>{user.email}</h3>
 						<h3 className='id'>{user.sub}</h3>
 					</div>
@@ -39,6 +39,6 @@ export default function UserComponent() {
 			</>
 		);
 	} else {
-		return <h3>Guest user. Please log in to view your profile.</h3>;
+		return <h3>Please log in to view your profile and personal files.</h3>;
 	}
 }

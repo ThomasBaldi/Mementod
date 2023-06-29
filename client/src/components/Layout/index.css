@@ -14,12 +14,20 @@
 	overflow: hidden;
 	position: fixed;
 	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	align-items: center;
 	height: 100vh;
 	left: -1vw;
 	border-radius: 3.5px;
-	margin-right: 5vw;
 	z-index: 1;
+}
+
+.logo {
+	height: auto;
+	width: 60px;
+	border-radius: 500px;
+	margin-bottom: 3vh;
 }
 
 #profileContainer {
