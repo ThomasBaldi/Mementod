@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@mui/material';
+import Alert from '@mui/lab/Alert';
 
 const validFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
@@ -9,7 +10,6 @@ export default function FileUpload() {
 	const [error, setError] = useState('');
 	const [message, setMessage] = useState('');
 	const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-	/* const toast = useToast(); */
 
 	const handleUpload = async (e) => {
 		e.preventDefault();
@@ -42,12 +42,6 @@ export default function FileUpload() {
 				})
 				.then(() => {
 					setMessage(`${file.name} uploaded`);
-					/* toast({
-				title: 'Picture Successfully Uploaded';
-				status: 'success'
-				duration: 2000,
-				postion: 'top
-				}) */
 				});
 		} catch (err) {
 			setError(err.message);
@@ -55,7 +49,7 @@ export default function FileUpload() {
 		}
 	};
 
-	const styling = {
+	const btnStyling = {
 		marginBottom: '3vh',
 		width: '100%',
 		transition: '0s 0.1s',
@@ -64,6 +58,15 @@ export default function FileUpload() {
 			transition: '0s',
 			border: '1px solid #834bff',
 		},
+	};
+
+	const alertStyling = {
+		position: 'fixed',
+		bottom: '0',
+		left: '0',
+		fontSize: '3vh',
+		display: 'flex',
+		alignItems: 'center',
 	};
 
 	if (isAuthenticated)
@@ -81,12 +84,20 @@ export default function FileUpload() {
 					variant='contained'
 					as='label'
 					htmlFor='imageInput'
-					sx={styling}
+					sx={btnStyling}
 				>
 					Upload Picture
 				</Button>
-				{error && <p style={{ color: '#FF0000' }}>{error}</p>}
-				{message && <p style={{ color: '##00FF00' }}>{message}</p>}
+				{error && (
+					<Alert sx={alertStyling} className='alert' severity='error'>
+						{error}
+					</Alert>
+				)}
+				{message && (
+					<Alert sx={alertStyling} className='alert' severity='success'>
+						{message}
+					</Alert>
+				)}
 			</>
 		);
 }

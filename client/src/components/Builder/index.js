@@ -1,12 +1,10 @@
-import UserComponent from './User/index';
 import FileUpload from '../UploadImage';
 import ShowUserImages from '../GetImages';
 
-const Profile = () => {
+const Builder = () => {
 	return (
 		<>
-			<div className='container' id='profileContainer'>
-				<UserComponent />
+			<div className='container' id='builderContainer'>
 				<FileUpload className='upload' />
 				<ShowUserImages />
 			</div>
@@ -14,4 +12,4 @@ const Profile = () => {
 	);
 };
 
-export default Profile;
+export default Builder;
