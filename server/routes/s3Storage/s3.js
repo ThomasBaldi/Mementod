@@ -81,4 +81,19 @@ module.exports = {
 			throw err;
 		}
 	},
+
+	deleteImage: async (imageKey) => {
+		const command = new DeleteObjectCommand({
+			Bucket: BUCKET,
+			Key: imageKey,
+		});
+
+		try {
+			await s3.send(command);
+			return console.log('Image removed from your cloud storage.');
+		} catch (err) {
+			console.log(err);
+			return err;
+		}
+	},
 };

@@ -4,13 +4,15 @@ import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useTheme } from '@mui/material/styles';
 import { Masonry } from '@mui/lab';
-import { Box, useMediaQuery } from '@mui/material';
+import { Button, Box, useMediaQuery } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import OpenIn from '@mui/icons-material/OpenInNewOutlined';
 
 export default function ShowUserImages() {
 	const { getAccessTokenSilently } = useAuth0();
 	const [picturesArr, setPicturesArr] = useState([]);
 	const [error, setError] = useState('');
-	/* const toast = useToast(); */
+	const [hovered, setHovered] = useState(false);
 
 	useEffect(() => {
 		window.addEventListener('error', (e) => {
@@ -74,18 +76,30 @@ export default function ShowUserImages() {
 		newWindow.document.write(`<img src="${imageSrc}" alt="Image" />`);
 	};
 
+	const handleMouseEnter = (name) => {
+		if (hovered !== name) setHovered(name);
+	};
+
+	const handleMouseLeave = () => {
+		if (hovered !== null) setHovered(null);
+	};
+
 	return (
 		<>
 			{picturesArr && (
-				<Box className='imageBox' sx={{ width: 1200, minHeight: 829 }}>
+				<Box className='masonryBox' sx={{ width: 1200, minHeight: 829 }}>
 					<Masonry columns={columns} spacing={2}>
 						{picturesArr.map((item) => (
-							<div key={item.name}>
+							<div
+								key={item.name}
+								className='imageCont'
+								onMouseEnter={() => handleMouseEnter(item.name)}
+								onMouseLeave={handleMouseLeave}
+							>
 								<img
 									className='image'
 									src={item.src}
 									alt={item.name}
-									onClick={() => handleImageClick(item.src)}
 									loading='lazy'
 									style={{
 										borderBottomLeftRadius: 4,
@@ -94,6 +108,37 @@ export default function ShowUserImages() {
 										width: '100%',
 									}}
 								/>
+								{hovered === item.name && (
+									<Button
+										className='openBtn'
+										onClick={() => handleImageClick(item.src)}
+										style={{
+											position: 'absolute',
+											bottom: '10px',
+											left: '5px',
+											background: '#121212',
+										}}
+										color='success'
+										variant='outlined'
+									>
+										<OpenIn />
+									</Button>
+								)}
+								{hovered === item.name && (
+									<Button
+										className='deleteBtn'
+										style={{
+											position: 'absolute',
+											bottom: '10px',
+											right: '5px',
+											background: '#121212',
+										}}
+										color='error'
+										variant='outlined'
+									>
+										<DeleteIcon />
+									</Button>
+								)}
 							</div>
 						))}
 					</Masonry>

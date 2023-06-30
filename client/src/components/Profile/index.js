@@ -1,6 +1,6 @@
 import UserComponent from './User/index';
-import FileUpload from '../UploadImage';
-import ShowUserImages from '../GetImages';
+import ShowUserImages from '../AxiosCalls/GetImages';
+import FileUpload from '../AxiosCalls/UploadImage';
 
 const Profile = () => {
 	return (
