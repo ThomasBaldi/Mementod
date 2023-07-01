@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@mui/material';
-import Alert from '@mui/lab/Alert';
+import Alert from '@mui/material/Alert';
 
 const validFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
@@ -42,6 +42,7 @@ export default function FileUpload() {
 				})
 				.then(() => {
 					setMessage(`${file.name} uploaded`);
+					window.location.reload();
 				});
 		} catch (err) {
 			setError(err.message);
