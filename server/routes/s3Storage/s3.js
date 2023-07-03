@@ -42,9 +42,7 @@ module.exports = {
 
 		try {
 			const { Contents = [] } = await s3.send(command);
-			return Contents; /* .map((image) => {
-				image.Key, image.ETag, image.Size, image.Owner;
-			}); */
+			return Contents;
 		} catch (err) {
 			console.log(err);
 			return { err };

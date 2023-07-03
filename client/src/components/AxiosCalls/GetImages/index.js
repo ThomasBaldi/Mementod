@@ -5,8 +5,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useTheme } from '@mui/material/styles';
 import { Masonry } from '@mui/lab';
 import { Button, Box, useMediaQuery } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import OpenIn from '@mui/icons-material/OpenInNewOutlined';
+import DeleteImage from '../DeleteImage';
 
 export default function ShowUserImages() {
 	const { getAccessTokenSilently } = useAuth0();
@@ -39,7 +39,6 @@ export default function ShowUserImages() {
 						audience: `${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/`,
 					},
 				});
-
 				const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/pictures`, {
 					headers: {
 						Authorization: `Bearer ${accessToken}`,
@@ -124,21 +123,7 @@ export default function ShowUserImages() {
 										<OpenIn />
 									</Button>
 								)}
-								{hovered === item.name && (
-									<Button
-										className='deleteBtn'
-										style={{
-											position: 'absolute',
-											bottom: '10px',
-											right: '5px',
-											background: '#121212',
-										}}
-										color='error'
-										variant='outlined'
-									>
-										<DeleteIcon />
-									</Button>
-								)}
+								{hovered === item.name && <DeleteImage image={item.name} />}
 							</div>
 						))}
 					</Masonry>

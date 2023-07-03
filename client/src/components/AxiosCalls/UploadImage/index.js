@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@mui/material';
-import Alert from '@mui/material/Alert';
+import AlertMsg from '../../AlertMsg';
 
 const validFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
@@ -42,8 +42,8 @@ export default function FileUpload() {
 				})
 				.then(() => {
 					setMessage(`${file.name} uploaded`);
-					window.location.reload();
 				});
+			/* .then(window.location.reload()); */
 		} catch (err) {
 			setError(err.message);
 			console.log(err);
@@ -59,15 +59,6 @@ export default function FileUpload() {
 			transition: '0s',
 			border: '1px solid #834bff',
 		},
-	};
-
-	const alertStyling = {
-		position: 'fixed',
-		bottom: '0',
-		left: '0',
-		fontSize: '3vh',
-		display: 'flex',
-		alignItems: 'center',
 	};
 
 	if (isAuthenticated)
@@ -89,16 +80,7 @@ export default function FileUpload() {
 				>
 					Upload Picture
 				</Button>
-				{error && (
-					<Alert sx={alertStyling} className='alert' severity='error'>
-						{error}
-					</Alert>
-				)}
-				{message && (
-					<Alert sx={alertStyling} className='alert' severity='success'>
-						{message}
-					</Alert>
-				)}
+				<AlertMsg message={message} error={error} />
 			</>
 		);
 }

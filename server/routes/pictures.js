@@ -4,7 +4,12 @@ const multer = require('multer');
 const { isAuthorized, getTokenData } = require('./authentication/routesMiddleware');
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
-const { uploadToS3, getAllImagesByUser, getImagesBufferName } = require('./s3Storage/s3');
+const {
+	uploadToS3,
+	getAllImagesByUser,
+	getImagesBufferName,
+	deleteImage,
+} = require('./s3Storage/s3');
 
 /* GET all user stored images */
 router
@@ -38,8 +43,18 @@ router
 		}
 	})
 	/* DELETE a specific image */
-	.delete('/', isAuthorized, async (req, res, next) => {
-		const picture = req.body.picture;
+	.delete('/:name', isAuthorized, async (req, res, next) => {
+		const image = req.params.name;
+		const userId = await getTokenData(req);
+		let userImages = await getAllImagesByUser(userId);
+		if (userImages) {
+			const imageForDeletion = userImages.find((obj) => obj.Key.endsWith(`%${image}`));
+
+			await deleteImage(imageForDeletion.Key);
+			return res.status(201).json({ message: `Successfully deleted ${image}.` });
+		} else {
+			return;
+		}
 	});
 
 module.exports = router;
