@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@mui/material';
-import AlertMsg from '../../../AlertMsg';
+import AlertMsg from '../../../../utils/AlertMsg';
 import { axiosCalls } from '../../../../utils/AxiosCalls';
 
 const validFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];

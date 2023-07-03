@@ -9,7 +9,7 @@ import {
 	DialogTitle,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import AlertMsg from '../../../AlertMsg';
+import AlertMsg from '../../../../utils/AlertMsg';
 import { axiosCalls } from '../../../../utils/AxiosCalls';
 
 export default function DeleteImage({ image }) {

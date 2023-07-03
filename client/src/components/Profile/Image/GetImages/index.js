@@ -6,7 +6,7 @@ import { Masonry } from '@mui/lab';
 import { Button, Box, useMediaQuery } from '@mui/material';
 import OpenIn from '@mui/icons-material/OpenInNewOutlined';
 import DeleteImage from '../DeleteImage';
-import AlertMsg from '../../../AlertMsg';
+import AlertMsg from '../../../../utils/AlertMsg';
 import { axiosCalls } from '../../../../utils/AxiosCalls';
 
 export default function ShowUserImages() {
