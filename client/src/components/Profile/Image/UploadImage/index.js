@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@mui/material';
-import AlertMsg from '../../AlertMsg';
+import AlertMsg from '../../../AlertMsg';
+import { axiosCalls } from '../../../../utils/AxiosCalls';
 
 const validFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
@@ -26,24 +26,11 @@ export default function FileUpload() {
 		}
 		//make API call to server to load the image through form
 		try {
-			const accessToken = await getAccessTokenSilently({
-				authorizationParams: {
-					audience: `${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/`,
-				},
-			});
 			const formData = new FormData();
 			formData.append('file', file);
-			await axios
-				.post(`${process.env.REACT_APP_SERVER_URL}/pictures`, formData, {
-					headers: {
-						'Content-Type': 'multipart/form-data',
-						Authorization: `Bearer ${accessToken}`,
-					},
-				})
-				.then(() => {
-					setMessage(`${file.name} uploaded`);
-				});
-			/* .then(window.location.reload()); */
+			await axiosCalls('post', formData, getAccessTokenSilently).then(() => {
+				setMessage(`${file.name} uploaded`);
+			});
 		} catch (err) {
 			setError(err.message);
 			console.log(err);

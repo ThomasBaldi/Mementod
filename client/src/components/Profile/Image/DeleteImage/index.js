@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import {
 	Button,
@@ -10,7 +9,8 @@ import {
 	DialogTitle,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import AlertMsg from '../../AlertMsg';
+import AlertMsg from '../../../AlertMsg';
+import { axiosCalls } from '../../../../utils/AxiosCalls';
 
 export default function DeleteImage({ image }) {
 	const [error, setError] = useState('');
@@ -24,24 +24,14 @@ export default function DeleteImage({ image }) {
 
 	const handleConfirm = async (e) => {
 		e.preventDefault();
-		//make API call to server to load the image through form
 		try {
-			const accessToken = await getAccessTokenSilently({
-				authorizationParams: {
-					audience: `${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/`,
-				},
-			});
-			await axios
-				.delete(`${process.env.REACT_APP_SERVER_URL}/pictures/${image}`, {
-					headers: {
-						Authorization: `Bearer ${accessToken}`,
-					},
-				})
-				.then(() => {
-					setMessage(`${image} deleted!`);
-					setOpen(false);
+			await axiosCalls('delete', image, getAccessTokenSilently).then(() => {
+				setMessage(`${image} deleted!`);
+				setOpen(false);
+				setTimeout(() => {
 					window.location.reload();
-				});
+				}, 3000);
+			});
 		} catch (err) {
 			setError(err.message);
 			console.log(err);

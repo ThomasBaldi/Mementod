@@ -1,19 +1,22 @@
 import './index.css';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useTheme } from '@mui/material/styles';
 import { Masonry } from '@mui/lab';
 import { Button, Box, useMediaQuery } from '@mui/material';
 import OpenIn from '@mui/icons-material/OpenInNewOutlined';
 import DeleteImage from '../DeleteImage';
+import AlertMsg from '../../../AlertMsg';
+import { axiosCalls } from '../../../../utils/AxiosCalls';
 
 export default function ShowUserImages() {
 	const { getAccessTokenSilently } = useAuth0();
 	const [picturesArr, setPicturesArr] = useState([]);
 	const [error, setError] = useState('');
+	const [message] = useState('');
 	const [hovered, setHovered] = useState(false);
 
+	//avoid resizeObserver from triggering
 	useEffect(() => {
 		window.addEventListener('error', (e) => {
 			if (e.message === 'ResizeObserver loop limit exceeded') {
@@ -34,17 +37,8 @@ export default function ShowUserImages() {
 	useEffect(() => {
 		const getImages = async () => {
 			try {
-				const accessToken = await getAccessTokenSilently({
-					authorizationParams: {
-						audience: `${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/`,
-					},
-				});
-				const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/pictures`, {
-					headers: {
-						Authorization: `Bearer ${accessToken}`,
-					},
-				});
-				if (picturesArr.length <= 0) setPicturesArr(response.data);
+				const response = await axiosCalls('get', undefined, getAccessTokenSilently);
+				setPicturesArr(response.data);
 			} catch (err) {
 				setError(err.message);
 				console.log(err);
@@ -129,7 +123,7 @@ export default function ShowUserImages() {
 					</Masonry>
 				</Box>
 			)}
-			{error && <p style={{ color: '#FF0000' }}>{error}</p>}
+			<AlertMsg message={message} error={error} />
 		</>
 	);
 }

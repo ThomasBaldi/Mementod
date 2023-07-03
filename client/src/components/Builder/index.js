@@ -1,5 +1,5 @@
-import ShowUserImages from '../AxiosCalls/GetImages';
-import FileUpload from '../AxiosCalls/UploadImage';
+import ShowUserImages from '../Profile/Image/GetImages';
+import FileUpload from '../Profile/Image/UploadImage';
 
 const Builder = () => {
 	return (

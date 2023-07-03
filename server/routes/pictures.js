@@ -11,8 +11,8 @@ const {
 	deleteImage,
 } = require('./s3Storage/s3');
 
-/* GET all user stored images */
 router
+	/* GET all users' stored images */
 	.get('/', isAuthorized, async (req, res, next) => {
 		const userId = await getTokenData(req);
 		let userImages = await getAllImagesByUser(userId);
