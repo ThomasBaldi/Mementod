@@ -3,11 +3,6 @@
 	justify-content: flex-end;
 	top: 0;
 	margin-right: 5vw;
-	/* left: 15vw;
-	width: auto;
-	height: 100vh;
-	margin: auto;
-	position: absolute; */
 }
 
 .navbarContainer {
@@ -21,6 +16,27 @@
 	left: -1vw;
 	border-radius: 3.5px;
 	z-index: 1;
+
+	.btn,
+	.btnDanger,
+	.btnSuccess {
+		background-color: #121212;
+	}
+
+	.btn:hover {
+		background-color: #7c4dff;
+		color: #121212;
+	}
+
+	.btnDanger:hover {
+		background-color: #ff4d4d;
+		color: #121212;
+	}
+
+	.btnSuccess:hover {
+		background-color: #6bff4d;
+		color: #121212;
+	}
 }
 
 .logo {
@@ -28,6 +44,10 @@
 	width: 60px;
 	border-radius: 500px;
 	margin-bottom: 3vh;
+}
+
+#userBox {
+	box-shadow: 0 29px 52px rgba(0, 0, 0, 0.5), 0 25px 16px rgba(0, 0, 0, 0.3);
 }
 
 #profileContainer {

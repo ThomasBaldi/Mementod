@@ -33,7 +33,6 @@ export default function UserComponent() {
 					<div className='details'>
 						<h3 className='name'>{user.nickname}</h3>
 						<h3 className='email'>{user.email}</h3>
-						<h3 className='id'>{user.sub}</h3>
 					</div>
 				</Box>
 			</>

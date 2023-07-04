@@ -17,14 +17,12 @@ export default function FileUpload() {
 		if (!file) {
 			return;
 		}
-		//validate file
 		if (!validFileTypes.find((type) => type === file.type)) {
 			setError('File must be jpeg/jpg/png format.');
 			return;
 		} else {
 			setError('');
 		}
-		//make API call to server to load the image through form
 		try {
 			const formData = new FormData();
 			formData.append('file', file);
@@ -44,7 +42,8 @@ export default function FileUpload() {
 		'&:active': {
 			backgroundColor: '#121212',
 			transition: '0s',
-			border: '1px solid #834bff',
+			border: '1px solid #7c4dff',
+			color: '#7c4dff',
 		},
 	};
 

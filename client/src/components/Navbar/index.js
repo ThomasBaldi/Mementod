@@ -34,10 +34,18 @@ const Navbar = () => {
 					aria-label='large button group'
 					orientation='vertical'
 				>
-					<Button href='/'>Home</Button>
-					<Button href='/profile'>Profile</Button>
-					<Button href='/builder'>Builder</Button>
-					<Button href='/contact'>Contact</Button>
+					<Button className='btn' href='/'>
+						Home
+					</Button>
+					<Button className='btn' href='/profile'>
+						Profile
+					</Button>
+					<Button className='btn' href='/builder'>
+						Builder
+					</Button>
+					<Button className='btn' href='/contact'>
+						Contact
+					</Button>
 					<br />
 					<LogoutButton />
 				</ButtonGroup>
@@ -54,10 +62,18 @@ const Navbar = () => {
 					aria-label='large button group'
 					orientation='vertical'
 				>
-					<Button href='/'>Home</Button>
-					<Button href='/profile'>Profile</Button>
-					<Button href='/builder'>Builder</Button>
-					<Button href='/contact'>Contact</Button>
+					<Button className='btn' href='/'>
+						Home
+					</Button>
+					<Button className='btn' href='/profile'>
+						Profile
+					</Button>
+					<Button className='btn' href='/builder'>
+						Builder
+					</Button>
+					<Button className='btn' href='/contact'>
+						Contact
+					</Button>
 					<br />
 					<LoginButton />
 				</ButtonGroup>
