@@ -7,7 +7,7 @@ const Profile = () => {
 		<>
 			<div className='container' id='profileContainer'>
 				<UserComponent />
-				<FileUpload className='upload' />
+				<FileUpload />
 				<ShowUserImages />
 			</div>
 		</>

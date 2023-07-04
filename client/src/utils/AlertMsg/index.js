@@ -16,7 +16,6 @@ export default function AlertMsg({ message, error }) {
 
 	const handleClose = () => {
 		setShowAlert(false);
-		window.location.reload();
 	};
 
 	return (

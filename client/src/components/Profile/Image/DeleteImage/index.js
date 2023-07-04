@@ -11,6 +11,7 @@ import {
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import AlertMsg from '../../../../utils/AlertMsg';
 import { axiosCalls } from '../../../../utils/AxiosCalls';
+import reload from '../../../../utils/WindowsReload';
 
 export default function DeleteImage({ image }) {
 	const [error, setError] = useState('');
@@ -28,9 +29,7 @@ export default function DeleteImage({ image }) {
 			await axiosCalls('delete', image, getAccessTokenSilently).then(() => {
 				setMessage(`${image} deleted!`);
 				setOpen(false);
-				setTimeout(() => {
-					window.location.reload();
-				}, 3000);
+				reload();
 			});
 		} catch (err) {
 			setError(err.message);

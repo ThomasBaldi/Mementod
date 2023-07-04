@@ -3,6 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@mui/material';
 import AlertMsg from '../../../../utils/AlertMsg';
 import { axiosCalls } from '../../../../utils/AxiosCalls';
+import reload from '../../../../utils/WindowsReload';
 
 const validFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
@@ -28,6 +29,7 @@ export default function FileUpload() {
 			formData.append('file', file);
 			await axiosCalls('post', formData, getAccessTokenSilently).then(() => {
 				setMessage(`${file.name} uploaded`);
+				reload();
 			});
 		} catch (err) {
 			setError(err.message);
