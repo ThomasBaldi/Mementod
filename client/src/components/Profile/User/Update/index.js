@@ -26,6 +26,13 @@ export default function UpdateProfile({ onClose }) {
 			setError('');
 		}
 		try {
+			//if not social user profile image exists, delete it
+			const response = await axiosCalls('getProfile', undefined, getAccessTokenSilently);
+			console.log(response);
+			if (response !== undefined) {
+				await axiosCalls('delete', response.data.name, getAccessTokenSilently);
+			}
+			//then set the new one
 			const updatedFileName = `profile.${file.type.split('/').pop()}`;
 			const updatedFile = new File([file], updatedFileName, { type: file.type });
 			const formData = new FormData();

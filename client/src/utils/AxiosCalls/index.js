@@ -19,6 +19,12 @@ export const axiosCalls = async (method, data, getAccessTokenSilently) => {
 		case 'get':
 			response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/pictures`, axiosConfig);
 			break;
+		case 'getProfile':
+			response = await axios.get(
+				`${process.env.REACT_APP_SERVER_URL}/pictures/profile`,
+				axiosConfig
+			);
+			break;
 		case 'post':
 			await axios.post(`${process.env.REACT_APP_SERVER_URL}/pictures`, data, axiosConfig);
 			break;

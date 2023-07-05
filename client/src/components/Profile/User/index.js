@@ -1,12 +1,16 @@
 import './index.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useTheme } from '@mui/material/styles';
 import { Box, useMediaQuery } from '@mui/material';
 import UpdateProfile from './Update';
+import { axiosCalls } from '../../../utils/AxiosCalls';
+import AlertMsg from '../../../utils/AlertMsg';
 
 export default function UserComponent() {
-	const { user, isAuthenticated } = useAuth0();
+	const [error, setError] = useState('');
+	const [profilePicture, setProfile] = useState(null);
+	const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 	const [isMenuOpen, setMenuOpen] = useState(false);
 	const theme = useTheme();
 	const isSmScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -22,6 +26,19 @@ export default function UserComponent() {
 	} else if (isLgScreen) {
 		width = 'lg';
 	}
+	useEffect(() => {
+		const getProfile = async () => {
+			try {
+				const response = await axiosCalls('getProfile', undefined, getAccessTokenSilently);
+				if (response.data !== undefined) setProfile(response.data.src);
+			} catch (err) {
+				setError(err.message);
+				console.log(err);
+			}
+		};
+		getProfile();
+		// eslint-disable-next-line
+	}, []);
 
 	const handleClick = () => {
 		setMenuOpen(true);
@@ -35,7 +52,12 @@ export default function UserComponent() {
 		return (
 			<>
 				<Box onClick={handleClick} size={width} id='userBox'>
-					<img className='picture' alt='profilePicture' src={user.picture} />
+					{profilePicture ? (
+						<img className='picture' alt='profilePicture' src={profilePicture} />
+					) : (
+						<img className='picture' alt='profilePicture' src={user.picture} />
+					)}
+
 					<div className='details'>
 						{user.name !== user.email && <h3 className='name'>{user.name}</h3>}
 						{user.name === user.email && <h3 className='name'>{user.nickname}</h3>}
@@ -43,6 +65,7 @@ export default function UserComponent() {
 					</div>
 				</Box>
 				{isMenuOpen && <UpdateProfile onClose={handleClose} />}
+				<AlertMsg error={error} />
 			</>
 		);
 	} else {

@@ -29,6 +29,27 @@ router
 		);
 		return res.status(201).json(imagesArr);
 	})
+	/* GET users' profile image */
+	.get('/profile', isAuthorized, async (req, res, next) => {
+		const userId = await getTokenData(req);
+		let userImages = await getAllImagesByUser(userId);
+		let profilePicture;
+		const validProfile = ['profile.jpg', 'profile.png', 'profile.jpeg'];
+		await Promise.all(
+			userImages.map(async (i) => {
+				let name = i.Key.split('%').pop();
+				if (validProfile.includes(name)) {
+					let imageDetails = await getImagesBufferName(i);
+					const b64 = Buffer.from(imageDetails.buffer).toString('base64');
+					profilePicture = {
+						src: `data:${imageDetails.mimeType};base64, ${b64}`,
+						name: imageDetails.name,
+					};
+				}
+			})
+		);
+		return res.status(201).json(profilePicture);
+	})
 	/* POST a new image */
 	.post('/', isAuthorized, upload.single('file'), async (req, res, next) => {
 		const { file } = req;
@@ -49,8 +70,7 @@ router
 		let userImages = await getAllImagesByUser(userId);
 		if (userImages) {
 			const imageForDeletion = userImages.find((obj) => obj.Key.endsWith(`%${image}`));
-
-			await deleteImage(imageForDeletion.Key);
+			if (imageForDeletion) await deleteImage(imageForDeletion.Key);
 			return res.status(201).json({ message: `Successfully deleted ${image}.` });
 		} else {
 			return;
