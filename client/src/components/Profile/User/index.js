@@ -10,6 +10,7 @@ import AlertMsg from '../../../utils/AlertMsg';
 export default function UserComponent() {
 	const [error, setError] = useState('');
 	const [profilePicture, setProfile] = useState(null);
+	const [username, setUsername] = useState('');
 	const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 	const [isMenuOpen, setMenuOpen] = useState(false);
 	const theme = useTheme();
@@ -48,6 +49,21 @@ export default function UserComponent() {
 		setMenuOpen(false);
 	};
 
+	const handleUsername = (newUsername) => {
+		setUsername(newUsername);
+		localStorage.setItem(user.email, newUsername);
+	};
+
+	useEffect(() => {
+		// Load the username from local storage
+		if (user && user.email) {
+			const storedUsername = localStorage.getItem(user.email);
+			if (storedUsername) {
+				setUsername(storedUsername);
+			}
+		}
+	}, [user]);
+
 	if (isAuthenticated) {
 		return (
 			<>
@@ -57,14 +73,18 @@ export default function UserComponent() {
 					) : (
 						<img className='picture' alt='profilePicture' src={user.picture} />
 					)}
-
 					<div className='details'>
-						{user.name !== user.email && <h3 className='name'>{user.name}</h3>}
-						{user.name === user.email && <h3 className='name'>{user.nickname}</h3>}
+						{user.name !== user.email && (
+							<h3 className='name'>{username !== '' ? username : user.name}</h3>
+						)}
+						{user.name === user.email && (
+							<h3 className='name'>{username !== '' ? username : user.nickname}</h3>
+						)}
+
 						<h3 className='email'>{user.email}</h3>
 					</div>
 				</Box>
-				{isMenuOpen && <UpdateProfile onClose={handleClose} />}
+				{isMenuOpen && <UpdateProfile onClose={handleClose} onUsernameChange={handleUsername} />}
 				<AlertMsg error={error} />
 			</>
 		);

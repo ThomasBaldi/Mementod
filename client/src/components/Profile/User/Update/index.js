@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './index.css';
-import { Menu, MenuItem } from '@mui/material';
+import { Menu, MenuItem, TextField, Button } from '@mui/material';
 import AlertMsg from '../../../../utils/AlertMsg';
 import { axiosCalls } from '../../../../utils/AxiosCalls';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -8,7 +8,9 @@ import reload from '../../../../utils/WindowsReload';
 
 const validFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
-export default function UpdateProfile({ onClose }) {
+export default function UpdateProfile({ onClose, onUsernameChange }) {
+	const [showInput, setShowInput] = useState(false);
+	const [inputValue, setInputValue] = useState('');
 	const [error, setError] = useState('');
 	const [message, setMessage] = useState('');
 	const { getAccessTokenSilently } = useAuth0();
@@ -47,9 +49,18 @@ export default function UpdateProfile({ onClose }) {
 		}
 	};
 
-	const handleNameEdit = async (e) => {
-		e.preventDefault();
-		console.log('CHANGE NAME!!');
+	const handleButtonClick = () => {
+		if (showInput === false) setShowInput(true);
+		else setShowInput(false);
+	};
+
+	const handleInputChange = (event) => {
+		setInputValue(event.target.value);
+	};
+
+	const handleSubmit = async () => {
+		onUsernameChange(inputValue);
+		setShowInput(false);
 	};
 
 	return (
@@ -59,20 +70,27 @@ export default function UpdateProfile({ onClose }) {
 					<MenuItem className='item' as='label' htmlFor='profileInput'>
 						Change Profile Picture
 					</MenuItem>
-					<MenuItem className='item' onClick={handleNameEdit}>
-						Change Username
-					</MenuItem>
 					<input
 						id='profileInput'
 						type='file'
 						onChange={handleProfilePicture}
 						style={{ display: 'none' }}
 					></input>
+					<MenuItem className='item' onClick={handleButtonClick}>
+						Change Username
+					</MenuItem>
+					{showInput && (
+						<div style={{ display: 'flex', flexDirection: 'row' }}>
+							<TextField color='secondary' value={inputValue} onChange={handleInputChange} />
+							<Button color='secondary' variant='contained' onClick={handleSubmit}>
+								Submit
+							</Button>
+						</div>
+					)}
 					<MenuItem className='close-button' onClick={onClose}>
 						Close Menu
 					</MenuItem>
 				</Menu>
-
 				<AlertMsg message={message} error={error} />
 			</div>
 		</>
