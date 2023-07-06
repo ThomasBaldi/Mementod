@@ -80,12 +80,14 @@ export default function UpdateProfile({ onClose, onUsernameChange }) {
 						Change Username
 					</MenuItem>
 					{showInput && (
-						<div style={{ display: 'flex', flexDirection: 'row' }}>
-							<TextField color='secondary' value={inputValue} onChange={handleInputChange} />
-							<Button color='secondary' variant='contained' onClick={handleSubmit}>
-								Submit
-							</Button>
-						</div>
+						<MenuItem onKeyDown={(e) => e.stopPropagation()}>
+							<div style={{ display: 'flex', flexDirection: 'row', margin: '0' }}>
+								<TextField color='secondary' value={inputValue} onChange={handleInputChange} />
+								<Button color='secondary' variant='contained' onClick={handleSubmit}>
+									Submit
+								</Button>
+							</div>
+						</MenuItem>
 					)}
 					<MenuItem className='close-button' onClick={onClose}>
 						Close Menu

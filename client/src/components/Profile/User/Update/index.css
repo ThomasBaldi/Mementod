@@ -33,4 +33,8 @@
 			background-color: #ff4d4d;
 		}
 	}
+
+	.MuiInputBase-input {
+		height: 5px;
+	}
 }
