@@ -66,7 +66,7 @@ export default function UpdateProfile({ onClose, onUsernameChange }) {
 	return (
 		<>
 			<div className='menu-overlay'>
-				<Menu className='menu' keepMounted open='true'>
+				<Menu className='menu' open='true'>
 					<MenuItem className='item' as='label' htmlFor='profileInput'>
 						Change Profile Picture
 					</MenuItem>

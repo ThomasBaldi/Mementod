@@ -67,7 +67,7 @@ export default function DeleteImage({ image }) {
 						<Button onClick={handleCancel} color='secondary' variant='contained'>
 							Cancel
 						</Button>
-						<Button onClick={handleConfirm} color='secondary' variant='contained' autoFocus>
+						<Button onClick={handleConfirm} color='secondary' variant='contained'>
 							Delete
 						</Button>
 					</DialogActions>

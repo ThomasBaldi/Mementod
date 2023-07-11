@@ -58,16 +58,18 @@ export default function FileUpload() {
 					onChange={handleUpload}
 					style={{ display: 'none' }}
 				></input>
-				<Button
-					className='button'
-					color='secondary'
-					variant='contained'
-					as='label'
-					htmlFor='imageInput'
-					sx={btnStyling}
-				>
-					Upload Picture
-				</Button>
+				<label htmlFor='imageInput' style={{ width: '100%' }}>
+					<Button
+						className='button'
+						sx={btnStyling}
+						color='secondary'
+						variant='contained'
+						component='span'
+					>
+						Upload Picture
+					</Button>
+				</label>
+
 				<AlertMsg message={message} error={error} />
 			</>
 		);
