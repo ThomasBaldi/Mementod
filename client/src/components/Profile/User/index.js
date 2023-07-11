@@ -13,6 +13,7 @@ export default function UserComponent() {
 	const [username, setUsername] = useState('');
 	const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 	const [isMenuOpen, setMenuOpen] = useState(false);
+
 	const theme = useTheme();
 	const isSmScreen = useMediaQuery(theme.breakpoints.down('sm'));
 	const isMdScreen = useMediaQuery(theme.breakpoints.between('md', 'lg'));
