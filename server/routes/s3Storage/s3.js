@@ -16,6 +16,7 @@ const BUCKET = process.env.S3_BUCKET;
 const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
+	//pictures
 	uploadToS3: async ({ file, userId }) => {
 		const key = `${userId}/${uuidv4()}%${file.originalname}`;
 		const command = new PutObjectCommand({
@@ -92,6 +93,25 @@ module.exports = {
 		} catch (err) {
 			console.log(err);
 			return err;
+		}
+	},
+
+	//albums
+	addAlbum: async ({ file, album, userId }) => {
+		const key = `${userId}_${album}/${uuidv4()}%${file.originalname}`;
+		const command = new PutObjectCommand({
+			Bucket: BUCKET,
+			Key: key,
+			Body: file.buffer,
+			ContentType: file.mimetype,
+		});
+
+		try {
+			await s3.send(command);
+			return { key };
+		} catch (err) {
+			console.log(err);
+			return { err };
 		}
 	},
 };

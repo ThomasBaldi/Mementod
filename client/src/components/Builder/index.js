@@ -1,12 +1,10 @@
-import ShowUserImages from '../Profile/Image/GetImages';
-import FileUpload from '../Profile/Image/UploadImage';
+import PhotoAlbumBuilder from './Album';
 
 const Builder = () => {
 	return (
 		<>
 			<div className='container' id='builderContainer'>
-				<FileUpload className='upload' />
-				<ShowUserImages />
+				<PhotoAlbumBuilder></PhotoAlbumBuilder>
 			</div>
 		</>
 	);

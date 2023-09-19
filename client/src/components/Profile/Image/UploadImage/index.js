@@ -8,9 +8,14 @@ import reload from '../../../../utils/WindowsReload';
 const validFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
 export default function FileUpload() {
+	const [albumName, setAlbumName] = useState('');
 	const [error, setError] = useState('');
 	const [message, setMessage] = useState('');
 	const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+
+	const handleAlbumNameChange = (e) => {
+		setAlbumName(e.target.value);
+	};
 
 	const handleUpload = async (e) => {
 		e.preventDefault();
@@ -27,6 +32,9 @@ export default function FileUpload() {
 		try {
 			const formData = new FormData();
 			formData.append('file', file);
+			if (albumName !== '') {
+				formData.append('album', albumName);
+			}
 			await axiosCalls('post', formData, getAccessTokenSilently).then(() => {
 				setMessage(`${file.name} uploaded`);
 				reload();
@@ -58,6 +66,16 @@ export default function FileUpload() {
 					onChange={handleUpload}
 					style={{ display: 'none' }}
 				></input>
+				{/*  */}
+				<input
+					id='albumNameInput'
+					type='text'
+					placeholder='Album Name'
+					value={albumName} // Bind the albumName state to the input value
+					onChange={handleAlbumNameChange}
+				/>
+				{/*  */}
+
 				<label htmlFor='imageInput' style={{ width: '100%' }}>
 					<Button
 						className='button'

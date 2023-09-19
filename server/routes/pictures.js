@@ -9,6 +9,7 @@ const {
 	getAllImagesByUser,
 	getImagesBufferName,
 	deleteImage,
+	addAlbum,
 } = require('./s3Storage/s3');
 
 router
@@ -54,10 +55,18 @@ router
 	.post('/', isAuthorized, upload.single('file'), async (req, res, next) => {
 		const { file } = req;
 		const userId = await getTokenData(req);
+		const album = req.body.album;
+		console.log(album);
+
 		if (!file || !userId) {
 			return res.status(400).json({ message: 'Bad Request' });
-		} else {
+		} else if (!album || album === '') {
 			const { err, key } = await uploadToS3({ file, userId });
+			if (err) return res.status(500).json({ message: err.message });
+
+			return res.status(201).json({ key });
+		} else {
+			const { err, key } = await addAlbum({ file, album, userId });
 			if (err) return res.status(500).json({ message: err.message });
 
 			return res.status(201).json({ key });
