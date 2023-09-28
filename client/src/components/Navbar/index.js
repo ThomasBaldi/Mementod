@@ -41,7 +41,7 @@ const Navbar = () => {
 						Profile
 					</Button>
 					<Button className='btn' href='/builder'>
-						Builder
+						Albums
 					</Button>
 					<Button className='btn' href='/contact'>
 						Contact

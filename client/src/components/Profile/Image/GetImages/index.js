@@ -19,7 +19,10 @@ export default function ShowUserImages() {
 	//avoid resizeObserver from triggering
 	useEffect(() => {
 		window.addEventListener('error', (e) => {
-			if (e.message === 'ResizeObserver loop limit exceeded') {
+			if (
+				e.message === 'ResizeObserver loop limit exceeded' ||
+				'ResizeObserver loop completed with undelivered notifications.'
+			) {
 				const resizeObserverErrDiv = document.getElementById(
 					'webpack-dev-server-client-overlay-div'
 				);

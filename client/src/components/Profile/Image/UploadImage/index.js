@@ -57,24 +57,31 @@ export default function FileUpload() {
 		},
 	};
 
+	const inpStyling = {
+		marginBottom: '3vh',
+		width: '100%',
+		height: '40px',
+		border: '1px solid #7c4dff',
+		borderRadius: '5px',
+		backgroundColor: '#121212',
+		color: '#7c4dff',
+		textAlign: 'center',
+		fontSize: '16px',
+	};
+
 	if (isAuthenticated)
 		return (
 			<>
-				<input
-					id='imageInput'
-					type='file'
-					onChange={handleUpload}
-					style={{ display: 'none' }}
-				></input>
-				{/*  */}
+				<input id='imageInput' type='file' onChange={handleUpload} style={{ display: 'none' }} />
+
 				<input
 					id='albumNameInput'
+					style={inpStyling}
 					type='text'
-					placeholder='Album Name'
-					value={albumName} // Bind the albumName state to the input value
+					placeholder='Add an album name or leave empty for general folder.'
+					value={albumName}
 					onChange={handleAlbumNameChange}
 				/>
-				{/*  */}
 
 				<label htmlFor='imageInput' style={{ width: '100%' }}>
 					<Button
