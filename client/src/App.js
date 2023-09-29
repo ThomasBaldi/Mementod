@@ -6,6 +6,7 @@ import Layout from './components/Layout';
 import Home from './components/Home';
 import Profile from './components/Profile';
 import Builder from './components/Builder';
+import { useEffect } from 'react';
 /* import Contact from './components/Contact'; */
 
 const darkTheme = createTheme({
@@ -27,6 +28,27 @@ const darkTheme = createTheme({
 });
 
 function App() {
+	//avoid resizeObserver from triggering
+	useEffect(() => {
+		window.addEventListener('error', (e) => {
+			if (
+				e.message === 'ResizeObserver loop limit exceeded' ||
+				'ResizeObserver loop completed with undelivered notifications.'
+			) {
+				const resizeObserverErrDiv = document.getElementById(
+					'webpack-dev-server-client-overlay-div'
+				);
+				const resizeObserverErr = document.getElementById('webpack-dev-server-client-overlay');
+				if (resizeObserverErr) {
+					resizeObserverErr.setAttribute('style', 'display: none');
+				}
+				if (resizeObserverErrDiv) {
+					resizeObserverErrDiv.setAttribute('style', 'display: none');
+				}
+			}
+		});
+	}, []);
+
 	return (
 		<ThemeProvider theme={darkTheme}>
 			<CssBaseline />

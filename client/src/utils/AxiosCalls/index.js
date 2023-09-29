@@ -25,6 +25,12 @@ export const axiosCalls = async (method, data, getAccessTokenSilently) => {
 				axiosConfig
 			);
 			break;
+		case 'getAlbumList':
+			response = await axios.get(
+				`${process.env.REACT_APP_SERVER_URL}/pictures/albums`,
+				axiosConfig
+			);
+			break;
 		case 'post':
 			await axios.post(`${process.env.REACT_APP_SERVER_URL}/pictures`, data, axiosConfig);
 			break;

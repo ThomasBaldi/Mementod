@@ -1,16 +1,7 @@
 import UserComponent from './User/index';
 import ShowUserImages from './Image/GetImages';
 import FileUpload from './Image/UploadImage';
-
-const txtStyling = {
-	marginBottom: '3vh',
-	paddingLeft: '2vw',
-	paddingRight: '2vw',
-	color: '#121212',
-	borderRadius: '5px',
-	textAlign: 'center',
-	backgroundColor: '#7c4dff',
-};
+import { txtStyling } from '../../utils/Styling';
 
 const Profile = () => {
 	return (

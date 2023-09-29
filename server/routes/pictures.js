@@ -10,6 +10,8 @@ const {
 	getImagesBufferName,
 	deleteImage,
 	addAlbum,
+	getAllUserFolders,
+	getAllImagesByUserAlbum,
 } = require('./s3Storage/s3');
 
 router
@@ -30,6 +32,46 @@ router
 		);
 		return res.status(201).json(imagesArr);
 	})
+
+	/* GET list of user album folders */
+	.get('/albums', isAuthorized, async (req, res, next) => {
+		const userId = await getTokenData(req);
+		let userAlbums = await getAllUserFolders(userId);
+		const albumsWithImages = await Promise.all(
+			userAlbums.map(async (album) => {
+				const imageDetails = await getImagesBufferName(album.firstObject);
+				const b64 = Buffer.from(imageDetails.buffer).toString('base64');
+
+				return {
+					...album, // Spread the original properties
+					src: `data:${imageDetails.mimeType};base64, ${b64}`, // Add the src property
+				};
+			})
+		);
+		if (userAlbums.length <= 0)
+			return res.status(400).json({ message: 'No specific albums available.' });
+		else return res.status(201).json(albumsWithImages);
+	})
+
+	/* GET all users' stored specific album images */
+	.get('/albumImage', isAuthorized, async (req, res, next) => {
+		const userId = await getTokenData(req);
+		const album = req.body.album;
+		let userImages = await getAllImagesByUserAlbum(userId, album);
+		var imagesArr = [];
+		await Promise.all(
+			userImages.map(async (i) => {
+				let imageDetails = await getImagesBufferName(i);
+				const b64 = Buffer.from(imageDetails.buffer).toString('base64');
+				imagesArr.push({
+					src: `data:${imageDetails.mimeType};base64, ${b64}`,
+					name: imageDetails.name,
+				});
+			})
+		);
+		return res.status(201).json(imagesArr);
+	})
+
 	/* GET users' profile image */
 	.get('/profile', isAuthorized, async (req, res, next) => {
 		const userId = await getTokenData(req);

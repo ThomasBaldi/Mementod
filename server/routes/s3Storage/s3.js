@@ -114,4 +114,54 @@ module.exports = {
 			return { err };
 		}
 	},
+
+	getAllImagesByUserAlbum: async (userId, album) => {
+		const command = new ListObjectsCommand({
+			Bucket: BUCKET,
+			Prefix: `${userId}_${album}`,
+		});
+
+		try {
+			const { Contents = [] } = await s3.send(command);
+			return Contents;
+		} catch (err) {
+			console.log(err);
+			return { err };
+		}
+	},
+
+	//bucket prefixes
+	getAllUserFolders: async (userId) => {
+		const command = new ListObjectsCommand({
+			Bucket: BUCKET,
+			Delimiter: '/',
+			Prefix: `${userId}_`,
+		});
+
+		try {
+			const albumsData = []; // Initialize an array to store album data
+
+			const response = await s3.send(command);
+			const matchingPrefixes = response.CommonPrefixes.map((prefix) => prefix.Prefix);
+
+			for (const prefix of matchingPrefixes) {
+				const folderName = prefix.replace(`${userId}_`, '').replace('/', '');
+
+				// List objects in the current folder
+				const objectsCommand = new ListObjectsCommand({
+					Bucket: BUCKET,
+					Prefix: prefix,
+				});
+
+				const objectsResponse = await s3.send(objectsCommand);
+				const firstObject = objectsResponse.Contents[0]; // Get the first object in the folder
+
+				albumsData.push({ folderName, firstObject });
+			}
+			return albumsData;
+		} catch (err) {
+			console.log(err);
+			return { err };
+		}
+	},
 };

@@ -10,36 +10,37 @@
 	z-index: 1;
 }
 
-.album-container {
+.albumContainer {
+	margin: auto;
+	/* width is height and other way around */
+	width: auto;
+	height: 70vw;
+	/*
 	position: absolute;
 	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
-	margin: auto;
-	width: 30vh;
-	height: 70vw;
 	overflow-y: scroll;
 	white-space: nowrap;
-	transform: rotate(-90deg);
-}
-
-.album-column {
-	height: fit-content;
-	width: fit-content;
-	margin-top: 10vw;
-	margin-bottom: 10vw;
-	margin-left: auto;
-	margin-right: auto;
-	white-space: nowrap;
+	transform: rotate(-90deg); */
 }
 
 .album {
-	margin: 0 auto;
-	width: 10vw;
-	text-align: center;
+	/* transform: rotate(90deg); */
+	margin-bottom: 5vh;
+}
+
+.albumCard {
 	margin: auto;
-	padding: 10px;
-	border: 1px solid #ccc;
-	transform: rotate(90deg);
+}
+
+.cardBtns {
+	justify-content: center;
+}
+
+h2 {
+	width: fit-content;
+	margin: auto;
+	margin-top: 3vh;
 }

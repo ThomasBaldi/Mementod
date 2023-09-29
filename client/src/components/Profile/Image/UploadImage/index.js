@@ -4,6 +4,7 @@ import { Button } from '@mui/material';
 import AlertMsg from '../../../../utils/AlertMsg';
 import { axiosCalls } from '../../../../utils/AxiosCalls';
 import reload from '../../../../utils/WindowsReload';
+import { btnStyling, inpStyling } from '../../../../utils/Styling';
 
 const validFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
@@ -43,30 +44,6 @@ export default function FileUpload() {
 			setError(err.message);
 			console.log(err);
 		}
-	};
-
-	const btnStyling = {
-		marginBottom: '3vh',
-		width: '100%',
-		transition: '0s 0.1s',
-		'&:active': {
-			backgroundColor: '#121212',
-			transition: '0s',
-			border: '1px solid #7c4dff',
-			color: '#7c4dff',
-		},
-	};
-
-	const inpStyling = {
-		marginBottom: '3vh',
-		width: '100%',
-		height: '40px',
-		border: '1px solid #7c4dff',
-		borderRadius: '5px',
-		backgroundColor: '#121212',
-		color: '#7c4dff',
-		textAlign: 'center',
-		fontSize: '16px',
 	};
 
 	if (isAuthenticated)
