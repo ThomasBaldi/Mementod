@@ -6,7 +6,7 @@ h3 {
 
 .container {
 	margin-top: 3vh;
-	min-width: 70vw;
+	width: 70vw;
 	margin: 0;
 	flex-direction: column;
 	align-items: center;
@@ -24,15 +24,8 @@ h3 {
 	justify-content: center;
 }
 
-.albumContainer {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-
 .albumBox {
-	min-width: 100%;
-	padding-top: 2vh;
+	padding: 2vw;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

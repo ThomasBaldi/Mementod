@@ -77,8 +77,7 @@ export default function ShowUserImages() {
 									alt={item.name}
 									loading='lazy'
 									style={{
-										borderBottomLeftRadius: 4,
-										borderBottomRightRadius: 4,
+										borderRadius: 10,
 										display: 'block',
 										width: '100%',
 									}}

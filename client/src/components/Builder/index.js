@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
-/* import AlbumContainer from './Album'; */
 import { Box, Button, Card, CardActions, CardMedia, Container } from '@mui/material';
 import { cardBtnStyling, cardTitleStyling, txtStyling } from '../../utils/Styling';
 import { axiosCalls } from '../../utils/AxiosCalls';
@@ -45,48 +44,44 @@ const Builder = () => {
 		<>
 			<div className='container' id='builderContainer'>
 				<h3 style={txtStyling}>EXPLORE ALL OF YOUR ALBUMS HERE</h3>
-				<div className='albumContainer'>
-					{albums &&
-						albums.map((album, index) => {
-							const isAlbumOpen = openAlbumNames.includes(album.folderName);
-							return (
-								<Container className='album' key={index}>
-									<Card
-										className='albumCard'
+				{albums &&
+					albums.map((album, index) => {
+						const isAlbumOpen = openAlbumNames.includes(album.folderName);
+						return (
+							<Container className='album' key={index}>
+								<Card
+									className='albumCard'
+									sx={{
+										borderRadius: '10px',
+										borderBottomLeftRadius: isAlbumOpen ? '0px' : '10px',
+										borderBottomRightRadius: isAlbumOpen ? '0px' : '10px',
+									}}
+								>
+									<CardMedia
 										sx={{
-											borderRadius: '10px',
-											borderBottomLeftRadius: isAlbumOpen ? '0px' : '10px',
-											borderBottomRightRadius: isAlbumOpen ? '0px' : '10px',
+											height: isAlbumOpen ? '0vh' : '40vh',
+											transition: 'height 0.5s ease-in-out',
+											overflow: 'hidden',
 										}}
-									>
-										<CardMedia
-											sx={{
-												height: isAlbumOpen ? '0vh' : '40vh',
-												transition: 'height 0.5s ease-in-out',
-												overflow: 'hidden',
-											}}
-											image={album.src}
-										/>
-										<CardActions className='cardBtns'>
-											<Box sx={cardTitleStyling}>{album.folderName}</Box>
-											<Button
-												color='secondary'
-												variant='contained'
-												sx={cardBtnStyling}
-												size='medium'
-												onClick={() => handleToggleAlbum(album.folderName)}
-											>
-												{isAlbumOpen ? 'Close Album' : 'Open Album'}
-											</Button>
-										</CardActions>
-									</Card>
-									<div className='albumContainer'>
-										{isAlbumOpen && <AlbumContainer albumName={album.folderName} />}
-									</div>
-								</Container>
-							);
-						})}
-				</div>
+										image={album.src}
+									/>
+									<CardActions className='cardBtns'>
+										<Box sx={cardTitleStyling}>{album.folderName}</Box>
+										<Button
+											color='secondary'
+											variant='contained'
+											sx={cardBtnStyling}
+											size='medium'
+											onClick={() => handleToggleAlbum(album.folderName)}
+										>
+											{isAlbumOpen ? 'Close Album' : 'Open Album'}
+										</Button>
+									</CardActions>
+								</Card>
+								{isAlbumOpen && <AlbumContainer albumName={album.folderName} />}
+							</Container>
+						);
+					})}
 			</div>
 			<AlertMsg message={message} error={error} />
 		</>

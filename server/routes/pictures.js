@@ -12,6 +12,7 @@ const {
 	addAlbum,
 	getAllUserFolders,
 	getAllImagesByUserAlbum,
+	renameImage,
 } = require('./s3Storage/s3');
 
 router
@@ -97,7 +98,6 @@ router
 		const { file } = req;
 		const userId = await getTokenData(req);
 		const album = req.body.album;
-		console.log(album);
 
 		if (!file || !userId) {
 			return res.status(400).json({ message: 'Bad Request' });
@@ -111,6 +111,21 @@ router
 			if (err) return res.status(500).json({ message: err.message });
 
 			return res.status(201).json({ key });
+		}
+	})
+	/* POST new name to already stored picture */
+	.post('/renamePicture', isAuthorized, async (req, res, next) => {
+		const userId = await getTokenData(req);
+		const oldName = req.body.oldFileName;
+		const newName = req.body.newFileName;
+
+		if (oldName && newName && userId) {
+			const { err, key } = await renameImage({ userId, oldName, newName });
+			if (err) return res.status(500).json({ message: err.message });
+
+			return res.status(201).json({ key });
+		} else {
+			return res.status(400).json({ message: 'Bad Request' });
 		}
 	})
 	/* DELETE a specific image */

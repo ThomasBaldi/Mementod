@@ -4,6 +4,7 @@ const {
 	ListObjectsCommand,
 	PutObjectCommand,
 	DeleteObjectCommand,
+	CopyObjectCommand,
 } = require('@aws-sdk/client-s3');
 const s3 = new S3Client({
 	region: process.env.S3_REGION,
@@ -90,6 +91,40 @@ module.exports = {
 		try {
 			await s3.send(command);
 			return console.log('Image removed from your cloud storage.');
+		} catch (err) {
+			console.log(err);
+			return err;
+		}
+	},
+
+	renameImage: async ({ userId, oldName, newName }) => {
+		const fileName = oldName.split('.');
+		const fileExtension = fileName.pop();
+		const newKey = `${newName}.${fileExtension}`;
+
+		const copyCommand = new CopyObjectCommand({
+			Bucket: BUCKET,
+			CopySource: `${userId}%${oldName}`,
+			Key: newKey,
+		});
+		try {
+			await s3
+				.send(copyCommand)
+				.then(() => {
+					console.log(
+						`Object with name ${oldName} was successfully copied and renamed ${newName}.`
+					);
+				})
+				.then(async () => {
+					const deleteCommand = new DeleteObjectCommand({
+						Bucket: BUCKET,
+						Key: oldKey,
+					});
+					await s3.send(deleteCommand);
+				})
+				.then(() => {
+					console.log(`Object with name ${oldName} was deleted.`);
+				});
 		} catch (err) {
 			console.log(err);
 			return err;

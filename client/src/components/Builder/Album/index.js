@@ -5,12 +5,16 @@ import { Masonry } from '@mui/lab';
 import { useAuth0 } from '@auth0/auth0-react';
 import { axiosCalls } from '../../../utils/AxiosCalls';
 import AlertMsg from '../../../utils/AlertMsg';
+import RenameFileDialog from './RenameFile';
+import reload from '../../../utils/WindowsReload';
 
 function AlbumContainer({ albumName }) {
 	const { getAccessTokenSilently } = useAuth0();
 	const [picturesArr, setPicturesArr] = useState([]);
 	const [error, setError] = useState('');
-	const [message] = useState('');
+	const [message, setMessage] = useState('');
+	const [isDialogOpen, setIsDialogOpen] = useState(false);
+	const [selectedAlbumName, setSelectedAlbumName] = useState('');
 
 	useEffect(() => {
 		const getImages = async () => {
@@ -42,10 +46,30 @@ function AlbumContainer({ albumName }) {
 		columns = 3;
 	}
 
+	// Function to handle renaming and sending to the server
+	const handleRenameAndSend = async (newFileName) => {
+		// Send `newFileName` to the server to rewrite the file name in S3
+		// You can use axios or your preferred HTTP library for this
+		// Example using axios:
+		try {
+			await axiosCalls(
+				'rename',
+				{ oldFileName: selectedAlbumName, newFileName },
+				getAccessTokenSilently
+			).then(() => {
+				setMessage(`${selectedAlbumName} renamed to "${newFileName}`);
+				reload();
+			});
+		} catch (err) {
+			setError(err.message);
+			console.log(err);
+		}
+	};
+
 	return (
 		<>
 			{picturesArr && (
-				<Box className='albumBox' sx={{ maxWidth: '60vw' }}>
+				<Box className='albumBox'>
 					<Masonry columns={columns} spacing={2}>
 						{picturesArr.map((item) => {
 							const [itemName] = item.name.split('.');
@@ -72,6 +96,10 @@ function AlbumContainer({ albumName }) {
 											width: '100%',
 										}}
 										size='medium'
+										onClick={() => {
+											setIsDialogOpen(true);
+											setSelectedAlbumName(item.name);
+										}}
 									>
 										{itemName}
 									</Box>
@@ -81,8 +109,12 @@ function AlbumContainer({ albumName }) {
 					</Masonry>
 				</Box>
 			)}
-
 			<AlertMsg message={message} error={error} />
+			<RenameFileDialog
+				open={isDialogOpen}
+				onClose={() => setIsDialogOpen(false)}
+				onSubmit={handleRenameAndSend}
+			/>
 		</>
 	);
 }

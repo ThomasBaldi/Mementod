@@ -43,6 +43,13 @@ export const axiosCalls = async (method, data, getAccessTokenSilently) => {
 		case 'delete':
 			await axios.delete(`${process.env.REACT_APP_SERVER_URL}/pictures/${data}`, axiosConfig);
 			break;
+		case 'rename':
+			await axios.post(
+				`${process.env.REACT_APP_SERVER_URL}/pictures/renamePicture`,
+				data,
+				axiosConfig
+			);
+			break;
 		default:
 			throw new Error(`Invalid method: ${method}`);
 	}
