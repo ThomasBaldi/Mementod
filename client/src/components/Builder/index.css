@@ -1,46 +1,43 @@
+h3 {
+	width: fit-content;
+	margin: auto;
+	margin-top: 3vh;
+}
+
 .container {
 	margin-top: 3vh;
-	height: 100vh;
 	min-width: 70vw;
 	margin: 0;
-	position: relative;
+	flex-direction: column;
+	align-items: center;
 }
 
 .albumBtn {
 	z-index: 1;
 }
 
-.albumContainer {
-	margin: auto;
-	/* width is height and other way around */
-	width: auto;
-	height: 70vw;
-	/*
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	overflow-y: scroll;
-	white-space: nowrap;
-	transform: rotate(-90deg); */
-}
-
 .album {
-	/* transform: rotate(90deg); */
 	margin-bottom: 5vh;
-}
-
-.albumCard {
-	margin: auto;
 }
 
 .cardBtns {
 	justify-content: center;
 }
 
-h2 {
-	width: fit-content;
-	margin: auto;
-	margin-top: 3vh;
+.albumContainer {
+	margin-top: 2vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.albumBox {
+	min-width: 100%;
+	padding-top: 2vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	background: #5031a52f;
+	border-radius: 5px;
 }

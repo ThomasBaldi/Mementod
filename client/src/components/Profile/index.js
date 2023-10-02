@@ -8,7 +8,7 @@ const Profile = () => {
 		<>
 			<div className='container' id='profileContainer'>
 				<UserComponent />
-				<h2 style={txtStyling}>A COLLECTION OF ALL YOUR UPLOADED PICTURES</h2>
+				<h3 style={txtStyling}>A COLLECTION OF ALL YOUR UPLOADED PICTURES</h3>
 				<FileUpload />
 				<ShowUserImages />
 			</div>

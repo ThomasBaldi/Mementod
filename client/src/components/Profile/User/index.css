@@ -28,7 +28,8 @@
 	align-items: center;
 }
 
-h3 {
+h3.name,
+h3.email {
 	margin: 0;
 	font-size: 15px;
 }

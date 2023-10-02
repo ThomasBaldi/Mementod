@@ -3,6 +3,10 @@
 	max-width: 70vw;
 }
 
+.MuiMasonry-root {
+	width: 100%;
+}
+
 .imageCont {
 	position: relative;
 	box-shadow: 0 29px 52px rgba(0, 0, 0, 0.5), 0 25px 16px rgba(0, 0, 0, 0.3);

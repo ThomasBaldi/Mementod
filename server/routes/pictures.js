@@ -41,10 +41,9 @@ router
 			userAlbums.map(async (album) => {
 				const imageDetails = await getImagesBufferName(album.firstObject);
 				const b64 = Buffer.from(imageDetails.buffer).toString('base64');
-
 				return {
-					...album, // Spread the original properties
-					src: `data:${imageDetails.mimeType};base64, ${b64}`, // Add the src property
+					...album,
+					src: `data:${imageDetails.mimeType};base64, ${b64}`,
 				};
 			})
 		);
@@ -54,13 +53,13 @@ router
 	})
 
 	/* GET all users' stored specific album images */
-	.get('/albumImage', isAuthorized, async (req, res, next) => {
+	.get('/albumImages/:name', isAuthorized, async (req, res, next) => {
 		const userId = await getTokenData(req);
-		const album = req.body.album;
-		let userImages = await getAllImagesByUserAlbum(userId, album);
+		const album = req.params.name;
+		let albumImages = await getAllImagesByUserAlbum(userId, album);
 		var imagesArr = [];
 		await Promise.all(
-			userImages.map(async (i) => {
+			albumImages.map(async (i) => {
 				let imageDetails = await getImagesBufferName(i);
 				const b64 = Buffer.from(imageDetails.buffer).toString('base64');
 				imagesArr.push({

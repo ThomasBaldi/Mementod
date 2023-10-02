@@ -62,7 +62,7 @@ export default function ShowUserImages() {
 	return (
 		<>
 			{picturesArr && (
-				<Box className='masonryBox' sx={{ width: 1200, minHeight: 829 }}>
+				<Box className='masonryBox' sx={{ minHeight: 829 }}>
 					<Masonry columns={columns} spacing={2}>
 						{picturesArr.map((item) => (
 							<div

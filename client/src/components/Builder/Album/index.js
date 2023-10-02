@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, useMediaQuery } from '@mui/material';
+import { Box, Button, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Masonry } from '@mui/lab';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -15,7 +15,7 @@ function AlbumContainer({ albumName }) {
 	useEffect(() => {
 		const getImages = async () => {
 			try {
-				const response = await axiosCalls('get', undefined, getAccessTokenSilently);
+				const response = await axiosCalls('getAlbumPictures', albumName, getAccessTokenSilently);
 				setPicturesArr(response.data);
 			} catch (err) {
 				setError(err.message);
@@ -44,12 +44,12 @@ function AlbumContainer({ albumName }) {
 
 	return (
 		<>
-			<div className='album'>
-				{picturesArr && (
-					<Box className='masonryBox' sx={{ width: 600, minHeight: 829 }}>
-						<h3>{albumName}</h3>
-						<Masonry columns={columns} spacing={2}>
-							{picturesArr.map((item) => (
+			{picturesArr && (
+				<Box className='albumBox' sx={{ maxWidth: '60vw' }}>
+					<Masonry columns={columns} spacing={2}>
+						{picturesArr.map((item) => {
+							const [itemName] = item.name.split('.');
+							return (
 								<div key={item.name} className='imageCont'>
 									<img
 										className='image'
@@ -57,18 +57,31 @@ function AlbumContainer({ albumName }) {
 										alt={item.name}
 										loading='lazy'
 										style={{
-											borderBottomLeftRadius: 4,
-											borderBottomRightRadius: 4,
+											borderTopLeftRadius: '5px',
+											borderTopRightRadius: '5px',
 											display: 'block',
 											width: '100%',
 										}}
 									/>
+									<Box
+										style={{
+											borderBottomLeftRadius: '5px',
+											borderBottomRightRadius: '5px',
+											background: '#1f1f1f',
+											display: 'block',
+											width: '100%',
+										}}
+										size='medium'
+									>
+										{itemName}
+									</Box>
 								</div>
-							))}
-						</Masonry>
-					</Box>
-				)}
-			</div>
+							);
+						})}
+					</Masonry>
+				</Box>
+			)}
+
 			<AlertMsg message={message} error={error} />
 		</>
 	);
