@@ -34,7 +34,8 @@ export const inpStyling = {
 
 export const cardTitleStyling = {
 	width: '100%',
-	color: '#7c4dff',
+	color: '#fffff',
+	fontSize: '2vh',
 };
 
 export const cardBtnStyling = {

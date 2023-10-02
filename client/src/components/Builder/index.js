@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
 /* import AlbumContainer from './Album'; */
-import { Button, Card, CardActions, CardMedia, Container } from '@mui/material';
+import { Box, Button, Card, CardActions, CardMedia, Container } from '@mui/material';
 import { cardBtnStyling, cardTitleStyling, txtStyling } from '../../utils/Styling';
 import { axiosCalls } from '../../utils/AxiosCalls';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -51,12 +51,24 @@ const Builder = () => {
 							const isAlbumOpen = openAlbumNames.includes(album.folderName);
 							return (
 								<Container className='album' key={index}>
-									<Card className='albumCard' sx={{ borderRadius: '10px' }}>
-										<CardMedia sx={{ height: '40vh' }} image={album.src} />
+									<Card
+										className='albumCard'
+										sx={{
+											borderRadius: '10px',
+											borderBottomLeftRadius: isAlbumOpen ? '0px' : '10px',
+											borderBottomRightRadius: isAlbumOpen ? '0px' : '10px',
+										}}
+									>
+										<CardMedia
+											sx={{
+												height: isAlbumOpen ? '0vh' : '40vh',
+												transition: 'height 0.5s ease-in-out',
+												overflow: 'hidden',
+											}}
+											image={album.src}
+										/>
 										<CardActions className='cardBtns'>
-											<Button disabled sx={cardTitleStyling} size='medium'>
-												{album.folderName}
-											</Button>
+											<Box sx={cardTitleStyling}>{album.folderName}</Box>
 											<Button
 												color='secondary'
 												variant='contained'
@@ -68,11 +80,9 @@ const Builder = () => {
 											</Button>
 										</CardActions>
 									</Card>
-									{isAlbumOpen && (
-										<div className='albumContainer'>
-											<AlbumContainer albumName={album.folderName} />
-										</div>
-									)}
+									<div className='albumContainer'>
+										{isAlbumOpen && <AlbumContainer albumName={album.folderName} />}
+									</div>
 								</Container>
 							);
 						})}
