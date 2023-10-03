@@ -115,18 +115,26 @@ router
 	})
 	/* POST new name to already stored picture */
 	.post('/renamePicture', isAuthorized, async (req, res, next) => {
-		const userId = await getTokenData(req);
 		const oldName = req.body.oldFileName;
 		const newName = req.body.newFileName;
+		const userId = await getTokenData(req);
 
-		if (oldName && newName && userId) {
-			const { err, key } = await renameImage({ userId, oldName, newName });
-			if (err) return res.status(500).json({ message: err.message });
+		let userImages = await getAllImagesByUser(userId);
 
-			return res.status(201).json({ key });
-		} else {
-			return res.status(400).json({ message: 'Bad Request' });
-		}
+		await Promise.all(
+			userImages.map(async (i) => {
+				let name = i.Key.split('%').pop();
+				if (oldName.includes(name)) {
+					let oldPicture = i.Key;
+					if (oldName && newName && userId) {
+						await renameImage({ userId, oldPicture, newName });
+						return res.status(201).json({ message: 'Renamed successfully!' });
+					} else {
+						return res.status(400).json({ message: 'Bad Request' });
+					}
+				}
+			})
+		);
 	})
 	/* DELETE a specific image */
 	.delete('/:name', isAuthorized, async (req, res, next) => {

@@ -6,6 +6,7 @@ const {
 	DeleteObjectCommand,
 	CopyObjectCommand,
 } = require('@aws-sdk/client-s3');
+
 const s3 = new S3Client({
 	region: process.env.S3_REGION,
 	credentials: {
@@ -97,33 +98,36 @@ module.exports = {
 		}
 	},
 
-	renameImage: async ({ userId, oldName, newName }) => {
-		const fileName = oldName.split('.');
+	renameImage: async ({ userId, oldPicture, newName }) => {
+		const fileName = oldPicture.split('.');
 		const fileExtension = fileName.pop();
 		const newKey = `${newName}.${fileExtension}`;
 
+		//for encoding issues derived by special characters
+		const encodedOldName = encodeURIComponent(oldPicture);
+
 		const copyCommand = new CopyObjectCommand({
 			Bucket: BUCKET,
-			CopySource: `${userId}%${oldName}`,
-			Key: newKey,
+			CopySource: BUCKET + '/' + encodedOldName,
+			Key: `${userId}/${uuidv4()}%${newKey}`,
 		});
 		try {
 			await s3
 				.send(copyCommand)
 				.then(() => {
 					console.log(
-						`Object with name ${oldName} was successfully copied and renamed ${newName}.`
+						`Object with name ${oldPicture} was successfully copied and renamed ${newName}.`
 					);
 				})
 				.then(async () => {
 					const deleteCommand = new DeleteObjectCommand({
 						Bucket: BUCKET,
-						Key: oldKey,
+						Key: oldPicture,
 					});
 					await s3.send(deleteCommand);
 				})
 				.then(() => {
-					console.log(`Object with name ${oldName} was deleted.`);
+					console.log(`Object with name ${oldPicture} was deleted.`);
 				});
 		} catch (err) {
 			console.log(err);

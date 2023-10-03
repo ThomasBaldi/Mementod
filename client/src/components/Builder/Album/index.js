@@ -81,16 +81,16 @@ function AlbumContainer({ albumName }) {
 										alt={item.name}
 										loading='lazy'
 										style={{
-											borderTopLeftRadius: '5px',
-											borderTopRightRadius: '5px',
+											borderTopLeftRadius: '10px',
+											borderTopRightRadius: '10px',
 											display: 'block',
 											width: '100%',
 										}}
 									/>
 									<Box
 										style={{
-											borderBottomLeftRadius: '5px',
-											borderBottomRightRadius: '5px',
+											borderBottomLeftRadius: '10px',
+											borderBottomRightRadius: '10px',
 											background: '#1f1f1f',
 											display: 'block',
 											width: '100%',
