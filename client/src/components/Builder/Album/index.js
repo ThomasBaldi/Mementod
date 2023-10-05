@@ -58,6 +58,7 @@ function AlbumContainer({ albumName }) {
 				getAccessTokenSilently
 			).then(() => {
 				setMessage(`${selectedAlbumName} renamed to "${newFileName}"`);
+				reload();
 			});
 		} catch (err) {
 			setError(err.message);
