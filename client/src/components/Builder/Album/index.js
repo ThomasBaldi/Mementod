@@ -46,11 +46,7 @@ function AlbumContainer({ albumName }) {
 		columns = 3;
 	}
 
-	// Function to handle renaming and sending to the server
 	const handleRenameAndSend = async (newFileName) => {
-		// Send `newFileName` to the server to rewrite the file name in S3
-		// You can use axios or your preferred HTTP library for this
-		// Example using axios:
 		try {
 			await axiosCalls(
 				'rename',
@@ -62,7 +58,6 @@ function AlbumContainer({ albumName }) {
 			});
 		} catch (err) {
 			setError(err.message);
-			console.log(err);
 		}
 	};
 
@@ -114,6 +109,7 @@ function AlbumContainer({ albumName }) {
 				open={isDialogOpen}
 				onClose={() => setIsDialogOpen(false)}
 				onSubmit={handleRenameAndSend}
+				label='New File Name'
 			/>
 		</>
 	);

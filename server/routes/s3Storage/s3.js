@@ -114,6 +114,8 @@ module.exports = {
 
 		if (matches && matches.length > 1) {
 			album = matches[1];
+		} else if (matches && matches.length > 1 && matches[1] === undefined) {
+			album = 'Album';
 		}
 
 		const copyCommand = new CopyObjectCommand({

@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
-import { Box, Button, Card, CardActions, CardMedia, Container } from '@mui/material';
+import { Box, Button, Card, CardActions, CardMedia } from '@mui/material';
 import { cardBtnStyling, cardTitleStyling, txtStyling } from '../../utils/Styling';
 import { axiosCalls } from '../../utils/AxiosCalls';
 import { useAuth0 } from '@auth0/auth0-react';
 import AlertMsg from '../../utils/AlertMsg';
 import AlbumContainer from './Album';
+import RenameFileDialog from './Album/RenameFile';
+import reload from '../../utils/WindowsReload';
 
 const Builder = () => {
 	const { getAccessTokenSilently } = useAuth0();
 	const [error, setError] = useState('');
-	const [message] = useState('');
+	const [message, setMessage] = useState('');
 	const [albums, setAlbums] = useState([]);
 	const [openAlbumNames, setOpenAlbumNames] = useState([]);
+	const [isDialogOpen, setIsDialogOpen] = useState(false);
+	const [selectedAlbum, setSelectedAlbum] = useState('');
 
 	useEffect(() => {
 		const getAlbumList = async () => {
@@ -40,6 +44,21 @@ const Builder = () => {
 		}
 	};
 
+	const handleAlbumRename = async (newAlbumName) => {
+		try {
+			await axiosCalls(
+				'renameAlbum',
+				{ oldAlbumName: selectedAlbum, newAlbumName },
+				getAccessTokenSilently
+			).then(() => {
+				setMessage(`${selectedAlbum} renamed to "${newAlbumName}"`);
+				reload();
+			});
+		} catch (err) {
+			setError(err.message);
+		}
+	};
+
 	return (
 		<>
 			<div className='container' id='builderContainer'>
@@ -48,7 +67,7 @@ const Builder = () => {
 					albums.map((album, index) => {
 						const isAlbumOpen = openAlbumNames.includes(album.folderName);
 						return (
-							<Container className='album' key={index}>
+							<div className='album' key={index}>
 								<Card
 									className='albumCard'
 									sx={{
@@ -66,7 +85,15 @@ const Builder = () => {
 										image={album.src}
 									/>
 									<CardActions className='cardBtns'>
-										<Box sx={cardTitleStyling}>{album.folderName}</Box>
+										<Box
+											sx={cardTitleStyling}
+											onClick={() => {
+												setIsDialogOpen(true);
+												setSelectedAlbum(album.folderName);
+											}}
+										>
+											{album.folderName}
+										</Box>
 										<Button
 											color='secondary'
 											variant='contained'
@@ -79,11 +106,17 @@ const Builder = () => {
 									</CardActions>
 								</Card>
 								{isAlbumOpen && <AlbumContainer albumName={album.folderName} />}
-							</Container>
+							</div>
 						);
 					})}
 			</div>
 			<AlertMsg message={message} error={error} />
+			<RenameFileDialog
+				open={isDialogOpen}
+				onClose={() => setIsDialogOpen(false)}
+				onSubmit={handleAlbumRename}
+				label='New Album Name'
+			/>
 		</>
 	);
 };

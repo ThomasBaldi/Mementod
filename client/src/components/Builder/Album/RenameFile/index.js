@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, TextField, Button } from '@mui/material';
-import { cardBtnStyling } from '../../../../utils/Styling';
 
-function RenameFileDialog({ open, onClose, onSubmit }) {
+function RenameFileDialog({ open, onClose, onSubmit, label }) {
 	const [newFileName, setNewFileName] = useState('');
 
 	const handleInputChange = (event) => {
@@ -18,7 +17,7 @@ function RenameFileDialog({ open, onClose, onSubmit }) {
 		<Dialog open={open} onClose={onClose}>
 			<DialogContent>
 				<TextField
-					label='New File Name'
+					label={label}
 					variant='outlined'
 					color='secondary'
 					focused
