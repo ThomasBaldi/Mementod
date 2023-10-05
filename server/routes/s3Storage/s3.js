@@ -99,6 +99,7 @@ module.exports = {
 	},
 
 	renameImage: async ({ userId, oldPicture, newName }) => {
+		//create new name with filte type at the end
 		const fileName = oldPicture.split('.');
 		const fileExtension = fileName.pop();
 		const newKey = `${newName}.${fileExtension}`;
@@ -106,10 +107,19 @@ module.exports = {
 		//for encoding issues derived by special characters
 		const encodedOldName = encodeURIComponent(oldPicture);
 
+		//extract album name
+		const pattern = /_([^/]+)\//;
+		const matches = oldPicture.match(pattern);
+		let album;
+
+		if (matches && matches.length > 1) {
+			album = matches[1];
+		}
+
 		const copyCommand = new CopyObjectCommand({
 			Bucket: BUCKET,
 			CopySource: BUCKET + '/' + encodedOldName,
-			Key: `${userId}/${uuidv4()}%${newKey}`,
+			Key: `${userId}_${album}/${uuidv4()}%${newKey}`,
 		});
 		try {
 			await s3
