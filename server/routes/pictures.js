@@ -13,6 +13,7 @@ const {
 	getAllUserFolders,
 	getAllImagesByUserAlbum,
 	renameImage,
+	renameAlbum,
 } = require('./s3Storage/s3');
 
 router
@@ -135,6 +136,28 @@ router
 				}
 			})
 		);
+	})
+	/* POST new name to already stored album */
+	.post('/renameAlbum', isAuthorized, async (req, res, next) => {
+		const oldAlbum = req.body.oldAlbumName;
+		const newAlbum = req.body.newAlbumName;
+		const userId = await getTokenData(req);
+
+		let albumImages = await getAllImagesByUserAlbum(userId, oldAlbum);
+
+		await Promise.all(
+			albumImages.map(async (i) => {
+				if (!oldAlbum && !newAlbum && !userId) {
+					return res.status(400).json({ message: 'Bad Request' });
+				} else if (albumImages.length <= 0) {
+					return;
+				} else {
+					await renameAlbum(userId, i.Key, newAlbum);
+				}
+			})
+		).then(() => {
+			return res.status(201).json({ message: 'Renamed successfully!' });
+		});
 	})
 	/* DELETE a specific image */
 	.delete('/:name', isAuthorized, async (req, res, next) => {

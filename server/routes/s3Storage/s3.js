@@ -181,6 +181,41 @@ module.exports = {
 		}
 	},
 
+	renameAlbum: async (userId, fileKey, newAlbum) => {
+		//encode key for copy
+		const encodedFile = encodeURIComponent(fileKey);
+		//extract uuid + fileName + extension
+		let file = fileKey.split('/');
+		let name = file[1];
+
+		const copyCommand = new CopyObjectCommand({
+			Bucket: BUCKET,
+			CopySource: BUCKET + '/' + encodedFile,
+			Key: `${userId}_${newAlbum}/${name}`,
+		});
+
+		try {
+			await s3
+				.send(copyCommand)
+				.then(() => {
+					console.log(`File ${name} was successfully copied to album ${newAlbum}.`);
+				})
+				.then(async () => {
+					const deleteCommand = new DeleteObjectCommand({
+						Bucket: BUCKET,
+						Key: fileKey,
+					});
+					await s3.send(deleteCommand);
+				})
+				.then(() => {
+					console.log(`Object with name ${name} was deleted from old album.`);
+				});
+		} catch (err) {
+			console.log(err);
+			return err;
+		}
+	},
+
 	//bucket prefixes
 	getAllUserFolders: async (userId) => {
 		const command = new ListObjectsCommand({
